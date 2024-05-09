@@ -4,6 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main(n_row, n_col, n_psi, n_action, n_episodes):
+    """
+    The main function implements Q-learning algorithm to train an agent in a gridworld environment with
+    obstacles and plots the rewards obtained over multiple episodes.
+    """
     agent = qlearning(0.1, 0.99, 0.1, n_row, n_col, n_psi, n_action)
     env = gridworld(n_row, n_col, n_row - 1, n_col - 1)
     obs = load_obstacles().load('environment/maps/map.txt')

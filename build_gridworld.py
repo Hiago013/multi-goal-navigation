@@ -1,10 +1,10 @@
 from environment import create_grid
 
 def main():
-    '''
-    Botão direito do mouse: insere o obstáculo
-    Botão esquerdo do mouse: insere o gol
-    Até o momento é salvo apenas o txt do obstáculo
+    ''' 
+    Botão esquerdo do mouse: insere/deleta o obstáculo
+    Salva o txt dos obstáculos
+
     '''
     grid_instance = create_grid(5,5,50,50)
     grid_instance.main()
