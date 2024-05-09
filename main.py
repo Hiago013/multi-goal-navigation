@@ -29,4 +29,4 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     plt.show()
 
 
-main(5, 5, 4, 3, 1000)
+main(15, 5, 4, 3, 1000)
