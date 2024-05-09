@@ -6,6 +6,10 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 class create_grid():
     def __init__(self, row, col, width, height, margem = 1):
+        """
+        This Python function initializes an object with specified row, column, width, height, and margin
+        attributes.
+        """
         self.row = row
         self.col = col
         self.width = width
@@ -15,6 +19,10 @@ class create_grid():
         
     
     def save(self, path : str = ''):
+        """
+        The `save` function writes the coordinates of cells with a value of 2 in a grid to a file
+        specified by the `path` parameter.
+        """
         with open(path, 'w') as f:
                         # Use a for loop to write each line of data to the file
                         for i in range(len(self.grid)):
@@ -26,6 +34,10 @@ class create_grid():
          
          
     def main(self):
+        """
+        The main function initializes a grid, sets up a Pygame window for path planning, handles mouse
+        events to update the grid, and continuously updates the display.
+        """
         # matriz
         for linha in range(self.row):
             self.grid.append([])
@@ -58,7 +70,7 @@ class create_grid():
                     coluna = pos[0] // (self.width + self.margem)
                     linha = pos[1] // (self.height + self.margem)
                 
-                    if evento.button == 3:  # Botão direito
+                    if evento.button == 1:  # Botão esquerdo
             
                         if self.grid[linha][coluna] == 2:
                             self.grid[linha][coluna] = 0
