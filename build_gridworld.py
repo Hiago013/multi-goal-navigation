@@ -1,4 +1,4 @@
-from map import create_grid
+from environment import create_grid
 
 def main():
     ''' 
@@ -8,7 +8,7 @@ def main():
     '''
     grid_instance = create_grid(8,8,50,50)
     grid_instance.main()
-    grid_instance.save('map/maps/map.txt')
+    grid_instance.save('environment/maps/map.txt')
         
 if __name__== "__main__":
     main()

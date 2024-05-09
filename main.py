@@ -1,12 +1,12 @@
 from intelligence import qlearning
-from map import gridworld, load_obstacles
+from environment import gridworld, load_obstacles
 import numpy as np
 import matplotlib.pyplot as plt
 
 def main(n_row, n_col, n_psi, n_action, n_episodes):
     agent = qlearning(0.1, 0.99, 0.1, n_row, n_col, n_psi, n_action)
     env = gridworld(n_row, n_col, n_row - 1, n_col - 1)
-    obs = load_obstacles().load('map/maps/map.txt')
+    obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
 
     rewards = np.zeros(n_episodes)
