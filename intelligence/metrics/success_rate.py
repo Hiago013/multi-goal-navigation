@@ -1,4 +1,4 @@
-from metrics_interface import metrics_interface
+from .metrics_interface import metrics_interface
 import numpy as np
 from typing import Tuple,List
 
@@ -8,6 +8,7 @@ class success_rate(metrics_interface):
             goal:Tuple[int,int], trans_model):
         count = 0 # conta qnts estados convergem
         row, col, psi = qtable.shape[0:-1]
+        print(qtable.shape[0:-1])
         visit = np.zeros((row,col,psi))
         for state in states:
             if visit[state] == 1:      #or np.any(qtable[state] == 1):
@@ -35,9 +36,5 @@ class success_rate(metrics_interface):
                 
         return 100*count/len(states)
 
-
-states = [(0, 0, 0), (0, 1, 0)]  
-qtable = np.zeros((2, 2, 4, 4))  
-goal = (1, 1)  
-sr = success_rate().run(states, qtable, goal)
-print("Succes rate:", sr)
+# if __name__ == '__main__':
+    

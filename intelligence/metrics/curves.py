@@ -4,7 +4,7 @@ import numpy as np
 
 # This class likely represents a collection of curves and implements methods defined in the `metrics_interface`.
 class curves(metrics_interface):
-    def run(self, qtable,
+    def run( qtable,
             target_state:Tuple[int, int, int],
             trans_model):
         turns = 0
@@ -12,7 +12,7 @@ class curves(metrics_interface):
         start_state = (0, 0, 0)
         next_state = (0, 0, 0)
         while (next_state != target_state) and n > 0:
-            best_action = np.argmax(qtable[start_state])
+            best_action = np.argmax(qtable[next_state])
             next_state = trans_model(start_state, best_action)
             if best_action != 0:
                 turns += 1

@@ -25,8 +25,9 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
         rewards[episode] = rr
         env.reset()
         env.exploring_starts()
+    agent.save_qtable()
     plt.plot(rewards)
     plt.show()
 
 
-main(15, 5, 4, 3, 1000)
+main(5, 5, 4, 3, 1000)

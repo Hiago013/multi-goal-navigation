@@ -5,7 +5,8 @@ from time import time
 
 # This class is implementing all the methods defined in the `metrics_interface` interface.
 class all_metrics(metrics_interface):
-    def run(self, qtable,
+    @staticmethod
+    def run( qtable,
             target_state:Tuple[int, int, int],
             trans_model):
         turns = 0
@@ -16,7 +17,7 @@ class all_metrics(metrics_interface):
         start_time = time()
         while (next_state != target_state) and n > 0:
             best_action = np.argmax(qtable[next_state])
-            next_state = trans_model(next_state, best_action)
+            next_state = trans_model(start_state, best_action)
             if best_action != 0:
                 turns += 1
             else:
