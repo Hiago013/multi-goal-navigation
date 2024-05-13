@@ -15,8 +15,8 @@ class all_metrics(metrics_interface):
         next_state = (0, 0, 0)
         start_time = time()
         while (next_state != target_state) and n > 0:
-            best_action = np.argmax(qtable[start_state])
-            next_state = trans_model(start_state, best_action)
+            best_action = np.argmax(qtable[next_state])
+            next_state = trans_model(next_state, best_action)
             if best_action != 0:
                 turns += 1
             else:

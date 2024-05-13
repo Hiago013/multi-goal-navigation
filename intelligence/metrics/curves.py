@@ -1,5 +1,5 @@
 
-from metrics_interface import metrics_interface
+from .metrics_interface import metrics_interface
 from typing import Tuple
 import numpy as np
 
