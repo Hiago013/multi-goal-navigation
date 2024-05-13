@@ -1,4 +1,3 @@
-
 from .metrics_interface import metrics_interface
 from typing import Tuple
 import numpy as np
@@ -19,7 +18,7 @@ class curves(metrics_interface):
                 turns += 1
             n -= 1
         return turns
-    
-        
-        
+
+
+
 

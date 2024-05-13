@@ -1,4 +1,4 @@
-from metrics_interface import metrics_interface
+from .metrics_interface import metrics_interface
 from typing import Tuple
 import numpy as np
 from time import time
@@ -24,4 +24,3 @@ class all_metrics(metrics_interface):
             n -= 1
         final_time = time() - start_time
         return turns, dist, final_time
-    
