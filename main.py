@@ -1,5 +1,5 @@
 from intelligence import qlearning
-from environment import gridworld, load_obstacles
+from environment import gridworld, load_obstacles, goal_position, goal_orientation
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -9,7 +9,8 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     obstacles and plots the rewards obtained over multiple episodes.
     """
     agent = qlearning(0.1, 0.99, 0.1, n_row, n_col, n_psi, n_action)
-    env = gridworld(n_row, n_col, n_row - 1, n_col - 1)
+    goal = goal_position((4, 4,))
+    env = gridworld(n_row, n_col, goal)
     obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
 

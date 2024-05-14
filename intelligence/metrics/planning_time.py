@@ -1,4 +1,5 @@
 from .metrics_interface import metrics_interface
+from environment.src import goal_position, transition_orientation
 from typing import Tuple
 import numpy as np
 from time import time
@@ -6,15 +7,15 @@ from time import time
 # This class named `planning_time` likely implements the `metrics_interface` interface.
 class planning_time(metrics_interface):
     def run(qtable,
-            target_state:Tuple[int, int, int],
-            trans_model):
+            target_state:goal_position,
+            start_state:Tuple,
+            trans_model:transition_orientation):
         n = 500
-        start_state = (0, 0, 0)
-        next_state = (0, 0, 0)
+        next_state = start_state
         start_time = time()
         while (next_state != target_state) and n > 0:
             best_action = np.argmax(qtable[next_state])
-            next_state = trans_model(start_state, best_action)
+            next_state = trans_model.step(next_state, best_action)
             n -= 1
         final_time = time() - start_time
         return final_time

@@ -4,7 +4,6 @@ def main():
     '''
     Botão esquerdo do mouse: insere/deleta o obstáculo
     Salva o txt dos obstáculos
-
     '''
     grid_instance = create_grid(5,5,50,50)
     grid_instance.main()
