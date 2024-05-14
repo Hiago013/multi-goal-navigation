@@ -1,5 +1,5 @@
 from intelligence import qlearning, success_rate, all_metrics
-from environment import gridworld, load_obstacles
+from environment import gridworld, load_obstacles, goal_position
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -35,7 +35,8 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     obstacles and plots the rewards obtained over multiple episodes.
     """
     agent = qlearning(0.1, 0.99, 0.1, n_row, n_col, n_psi, n_action)
-    env = gridworld(n_row, n_col, n_row - 1, n_col - 1)
+    goal = goal_position((4, 4))
+    env = gridworld(n_row, n_col, n_row - 1, n_col - 1, goal)
     obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
 
@@ -54,10 +55,10 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     agent.save_qtable()
 
     states = [(0, 0, 0), (0, 1, 0), (3,3,0)]
-    sr = success_rate.run(states, np.load('qtable.npy'), tuple(env.goal), model_trans)
-    curves, dist, time = all_metrics.run(qtable=np.load('qtable.npy'), target_state=tuple(env.goal), trans_model=model_trans)
-    print("Success rate:", sr)
-    print(f'{curves, dist, time}')
+    #sr = success_rate.run(states, np.load('qtable.npy'), env.goal, model_trans)
+    #curves, dist, time = all_metrics.run(qtable=np.load('qtable.npy'), target_state=tuple(env.goal), trans_model=model_trans)
+    #print("Success rate:", sr)
+    #print(f'{curves, dist, time}')
     plt.plot(rewards)
     plt.show()
 

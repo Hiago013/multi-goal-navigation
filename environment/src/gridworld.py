@@ -1,7 +1,8 @@
 import numpy as np
 from typing import Tuple, List
+from .goal_position import goal_position
 class gridworld(object):
-    def __init__(self, nrow, ncol, r_g, c_g):
+    def __init__(self, nrow, ncol, r_g, c_g, goal:goal_position):
         """
         This function initializes variables for a grid environment with a specified number of rows and
         columns, a goal position, and transition matrices for position and orientation.
@@ -13,7 +14,7 @@ class gridworld(object):
         self.nrow = nrow
         self.ncol = ncol
 
-        self.goal = np.array([r_g, c_g])
+        self.goal = goal
         self.obstacles = np.array([])
 
         self.n_psi = 4
@@ -38,7 +39,8 @@ class gridworld(object):
         and obstacles in a grid environment.
         """
         r = -1
-        if np.all(self.goal == np.array([s[0], s[1]])):
+        print(s)
+        if self.goal.isdone(s):
             r += 100
 
         for i in range(len(self.obstacles)):
@@ -51,7 +53,7 @@ class gridworld(object):
         """
         The function `isdone` checks if the current position (`c_r`, `c_c`) matches the goal position.
         """
-        if np.all(self.goal == np.array([self.c_r, self.c_c])):
+        if self.goal.isdone((self.c_r, self.c_c)):
             return True
         return False
 
@@ -82,7 +84,7 @@ class gridworld(object):
         self.c_psi = new_psi
 
         s_prime = np.array([self.c_r, self.c_c, self.c_psi])
-        r = self.getReward(new_position)
+        r = self.getReward(tuple(new_position))
 
         return s,a,r,s_prime
 

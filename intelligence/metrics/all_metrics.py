@@ -1,4 +1,5 @@
 from .metrics_interface import metrics_interface
+from environment.src import goal_position
 from typing import Tuple
 import numpy as np
 from time import time
