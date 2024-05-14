@@ -1,32 +1,8 @@
 from intelligence import qlearning, success_rate, all_metrics
-from environment import gridworld, load_obstacles, goal_position
+from environment import gridworld, load_obstacles, goal_position, goal_orientation
+from environment import transition_orientation as trans_model
 import numpy as np
 import matplotlib.pyplot as plt
-
-def model_trans(state, action):
-    """
-    The function `model_trans` takes a state and an action as input and returns a new state based on the
-    action taken in a simple 2D grid world with four possible actions.
-    """
-    psi_transition = np.array([0, 1, -1])
-    position_transition = np.array([[1, 0],
-                  [0, 1],
-                  [-1, 0],
-                  [0, -1]])
-
-    position = state[0:2]
-    psi = state[-1]
-
-    if action == 0:
-        new_position = position_transition[psi] + position
-        new_psi = psi
-    else:
-        new_position = position
-        new_psi = (psi + psi_transition[action]) % 4
-
-    new_state = tuple([new_position[0], new_position[1], new_psi])
-    return new_state
-
 
 
 def main(n_row, n_col, n_psi, n_action, n_episodes):
@@ -36,7 +12,7 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     """
     agent = qlearning(0.1, 0.99, 0.1, n_row, n_col, n_psi, n_action)
     goal = goal_position((4, 4))
-    env = gridworld(n_row, n_col, n_row - 1, n_col - 1, goal)
+    env = gridworld(n_row, n_col, goal)
     obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
 
@@ -55,10 +31,12 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     agent.save_qtable()
 
     states = [(0, 0, 0), (0, 1, 0), (3,3,0)]
-    #sr = success_rate.run(states, np.load('qtable.npy'), env.goal, model_trans)
-    #curves, dist, time = all_metrics.run(qtable=np.load('qtable.npy'), target_state=tuple(env.goal), trans_model=model_trans)
-    #print("Success rate:", sr)
-    #print(f'{curves, dist, time}')
+    sr = success_rate.run(states=states, qtable=np.load('qtable.npy'),
+                         goal=env.goal, trans_model=trans_model)
+    curves, dist, time = all_metrics.run(qtable=np.load('qtable.npy'), target_state=env.goal,
+                                         start_state=(0,0,0), trans_model=trans_model)
+    print("Success rate:", sr)
+    print(f'Curves:{curves}   Dist:{dist}   Time:{time:.5f}s\n')
     plt.plot(rewards)
     plt.show()
 
