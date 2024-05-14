@@ -8,7 +8,6 @@ class success_rate(metrics_interface):
             goal:Tuple[int,int], trans_model):
         count = 0 # conta qnts estados convergem
         row, col, psi = qtable.shape[0:-1]
-        print(qtable.shape[0:-1])
         visit = np.zeros((row,col,psi))
         for state in states:
             if visit[state] == 1:      #or np.any(qtable[state] == 1):
@@ -28,13 +27,14 @@ class success_rate(metrics_interface):
                 if (next_state[0], next_state[1]) == goal:
                     count += 1
                     done = True
-            
+
             if done:
-                visit[state_list] = 1
+                for step in state_list:
+                    visit[step] = 1
             else:
-                visit[state_list] = -1
-                
+                for step in state_list:
+                    visit[step] = -1
+
         return 100*count/len(states)
 
 # if __name__ == '__main__':
-    

@@ -13,17 +13,17 @@ def model_trans(state, action):
                   [0, 1],
                   [-1, 0],
                   [0, -1]])
-    
+
     position = state[0:2]
     psi = state[-1]
-    
+
     if action == 0:
         new_position = position_transition[psi] + position
         new_psi = psi
     else:
         new_position = position
         new_psi = (psi + psi_transition[action]) % 4
-    
+
     new_state = tuple([new_position[0], new_position[1], new_psi])
     return new_state
 
@@ -52,15 +52,14 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
         env.reset()
         env.exploring_starts()
     agent.save_qtable()
-    
-    states = [(0, 0, 0), (0, 1, 0), (3,3,0)]  
+
+    states = [(0, 0, 0), (0, 1, 0), (3,3,0)]
     sr = success_rate.run(states, np.load('qtable.npy'), tuple(env.goal), model_trans)
     curves, dist, time = all_metrics.run(qtable=np.load('qtable.npy'), target_state=tuple(env.goal), trans_model=model_trans)
-    
     print("Success rate:", sr)
     print(f'{curves, dist, time}')
     plt.plot(rewards)
     plt.show()
 
+main(5, 5, 4, 3, 5000)
 
-main(5, 5, 4, 3, 1000)
