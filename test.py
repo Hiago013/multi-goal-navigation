@@ -1,7 +1,7 @@
 from intelligence import qlearning, success_rate, all_metrics, egreedy_decay
 from environment import gridworld, load_obstacles, goal_position, goal_orientation
 from environment import transition_orientation as trans_model
-from dictionary_position import dictionary_position
+from graph_2d import graph_2d
 from environment import transition_position
 import numpy as np
 import matplotlib.pyplot as plt
@@ -42,8 +42,8 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     plt.plot(rewards)
     plt.show()
     
-    dicti = dictionary_position(nrow=5, ncol=5, modelo=transition_position, actions=[0, 1, 2, 3])
-    graph = dicti.dict2D()
+    dicti = graph_2d(nrow=5, ncol=5, modelo=transition_position, actions=[0, 1, 2, 3])
+    graph = dicti.get_graph()
     for state in graph:
         print(f'{state} : {graph[state]}')
 

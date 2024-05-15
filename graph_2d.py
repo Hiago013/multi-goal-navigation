@@ -4,11 +4,11 @@ from typing import Tuple
 
 # This class likely represents a data structure to store key-value pairs with the ability to access 
 # elements by their position in the dictionary.
-class dictionary_position():
+class graph_2d():
     def __init__(self,
-                 nrow,
-                 ncol,
-                 modelo: transition_position,
+                 nrow:int,
+                 ncol:int,
+                 modelo:transition_position,
                  actions:list
                  ):
         
@@ -28,7 +28,7 @@ class dictionary_position():
             return False
         return True
                
-    def dict2D(self):
+    def get_graph(self):
         """
         The function `dict2D` creates a 2D dictionary representing a graph where each cell has a list of
         neighboring cells based on certain conditions.

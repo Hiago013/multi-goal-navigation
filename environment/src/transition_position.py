@@ -1,9 +1,12 @@
 from .model_transition_interface import model_trasition_interface
+from typing import Tuple
 import numpy as np
 
 class transition_position(model_trasition_interface):
     @staticmethod
-    def step(state, action):
+    def step(state:Tuple[int, int],
+             action:int) -> Tuple[int, int]:
+    
         """
         The function `model_trans` takes a state and an action as input and returns a new state based on the
         action taken in a simple 2D grid world with four possible actions.
