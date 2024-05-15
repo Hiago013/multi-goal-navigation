@@ -1,6 +1,8 @@
 from intelligence import qlearning, success_rate, all_metrics, egreedy_decay
 from environment import gridworld, load_obstacles, goal_position, goal_orientation
 from environment import transition_orientation as trans_model
+from dictionary_position import dictionary_position
+from environment import transition_position
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -15,7 +17,7 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     env = gridworld(n_row, n_col, goal)
     obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
-
+    
     rewards = np.zeros(n_episodes)
     for episode in range(n_episodes):
         rr = 0
@@ -39,6 +41,11 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     print(f'Curves:{curves}   Dist:{dist}   Time:{time:.5f}s\n')
     plt.plot(rewards)
     plt.show()
+    
+    dicti = dictionary_position(nrow=5, ncol=5, modelo=transition_position, actions=[0, 1, 2, 3])
+    graph = dicti.dict2D()
+    for state in graph:
+        print(f'{state} : {graph[state]}')
 
 main(5, 5, 4, 3, 1000)
 
