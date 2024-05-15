@@ -8,7 +8,7 @@ class graph_2d():
     def __init__(self,
                  nrow:int,
                  ncol:int,
-                 modelo:transition_position,
+                 model:transition_position,
                  actions:list
                  ):
         
