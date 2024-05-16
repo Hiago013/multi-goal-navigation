@@ -1,86 +1,117 @@
-import pygame
-import sys
+# CLASS GRID
+import pygame, sys
+import os
 from typing import Tuple, List
+from time import sleep
+
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (245, 230, 66)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+class path_view():
+    def __init__(self,
+                 row:int,
+                 col:int,
+                 width:int,
+                 height:int,
+                 states:List[Tuple[int, int]],
+                 margin = 1,
+                 ):
 
-class GridModel:
-    def __init__(self, row: int, col: int):
-        self.row = row
-        self.col = col
-        self.grid = [[0] * col for _ in range(row)]
-
-    def set_cell(self, row: int, col: int, value: int):
-        if 0 <= row < self.row and 0 <= col < self.col:
-            self.grid[row][col] = value
-
-    def get_cell_value(self, row: int, col: int) -> int:
-        return self.grid[row][col]
-
-class GridView:
-    def __init__(self, row: int, col: int, width: int, height: int, margin: int):
+        """
+        This Python function initializes an object with specified row, column, width, height, margin and states
+        attributes.
+        """
         self.row = row
         self.col = col
         self.width = width
         self.height = height
         self.margin = margin
-        self.states = []
+        self.states = states
+        self.grid = []
 
-    def draw_grid(self, window, model):
+
+    def save(self, path : str = ''):
+        """
+        The `save` function writes the coordinates of cells with a value of 2 in a grid to a file
+        specified by the `path` parameter.
+        """
+        with open(path, 'w') as f:
+                        # Use a for loop to write each line of data to the file
+                        for i in range(len(self.grid)):
+                            for j in range(len(self.grid[0])):
+                                if self.grid[i][j] == 1 or self.grid[i][j] == 2 or self.grid[i][j] == 3:
+                                    f.write(f'{i} {j}\n')
+        pygame.quit()
+
+
+
+    def main(self):
+        """
+        The main function initializes a grid, sets up a Pygame window for path planning, handles mouse
+        events to update the grid, and continuously updates the display.
+        """
+        # matriz
         for row in range(self.row):
+            self.grid.append([])
             for col in range(self.col):
-                color = self._get_color(model.get_cell_value(row, col))
-                pygame.draw.rect(window, color, [(self.margin + self.width) * col + self.margin,
-                                                  (self.margin + self.height) * row + self.margin,
-                                                  self.width, self.height])
+                self.grid[row].append(0)
 
-    def _get_color(self, value: int) -> Tuple[int, int, int]:
-        if value == 1:
-            return YELLOW
-        elif value == 2:
-            return RED
-        elif value == 3:
-            return GREEN
-        else:
-            return WHITE
-
-class GameController:
-    def __init__(self, model, view):
-        self.model = model
-        self.view = view
-
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-    def update_model(self, row: int, col: int, value: int):
-        self.model.set_cell(row, col, value)
-
-class PathPlanningApp:
-    def __init__(self, row: int, col: int, width: int, height: int, margin: int, states: List[Tuple[int, int]]):
-        self.model = GridModel(row, col)
-        self.view = GridView(row, col, width, height, margin)
-        self.controller = GameController(self.model, self.view)
-        self.view.states = states
-
-    def run(self):
+        # inicialização
         pygame.init()
-        window = pygame.display.set_mode(((self.view.col * self.view.height) + self.view.col + 1,
-                                          (self.view.row * self.view.width) + self.view.row + 1))
+        # display e tamanho da interface
+        janela = pygame.display.set_mode(((self.col*self.height) + self.col + 1, (self.row*self.width) + self.row+1))
+        # named window
         pygame.display.set_caption("Path Planning")
-        while True:
-            self.controller.handle_events()
-            self.view.draw_grid(window, self.model)
-            pygame.display.flip()
 
-if __name__ == "__main__":
-    # Example usage
-    states = [(1, 2), (3, 4)]  # Example states
-    app = PathPlanningApp(10, 10, 30, 30, 1, states)
-    app.run()
+
+        for row, col in self.states:
+            # verifica se linha e coluna estão no limite da grade
+            if 0 <= row < len(self.grid) and 0 <= col < len(self.grid[0]):
+                self.grid[row][col] = 1
+            if (row, col) == (self.states[0]):
+                self.grid[row][col] = 2
+            if (row, col) == (self.states[-1]):
+                self.grid[row][col] = 3
+            print("Coordinates: ", row, col)
+
+
+        FPS = 30
+        timer = pygame.time.Clock()
+        done = True
+        while done:
+            # eventos
+            for evento in pygame.event.get():
+                # se o evento foi um pedido para sair
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+                elif evento.type == 768:
+                    done = False
+
+            # pinta a janela de BLACK
+            janela.fill(BLACK)
+            # desenha o grid na janela
+            for row in range(self.row):
+                for col in range(self.col):
+                    cor = WHITE
+
+                    if self.grid[row][col] == 1:
+                        cor = YELLOW
+                    elif self.grid[row][col] == 2:
+                        cor = RED
+                    elif self.grid[row][col] == 3:
+                        cor = GREEN
+
+                    # desenha o grid e pinta se receber o evento
+                    pygame.draw.rect(janela, cor, [(self.margin + self.width) * col + self.margin,
+                    (self.margin + self.height) * row + self.margin, self.width, self.height])
+
+
+            # dispara o timer
+            timer.tick(FPS)
+            # atualiza a janela
+            pygame.display.flip()
