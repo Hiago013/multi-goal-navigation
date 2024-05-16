@@ -5,3 +5,4 @@ from .goal_position import goal_position
 from .goal_orientation import goal_orientation
 from .transition_orientation import transition_orientation
 from .transition_position import transition_position
+from .path_view import path_view
