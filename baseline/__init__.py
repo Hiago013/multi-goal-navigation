@@ -1,3 +1,4 @@
-from .graph_2d import graph_2d
-from .dijkstra import dijkstra
 from .shortest_path_context import shortest_path_context
+from .data_structure import *
+from .graphs import *
+from .strategies import *

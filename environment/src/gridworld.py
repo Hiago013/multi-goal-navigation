@@ -1,7 +1,8 @@
 import numpy as np
 from typing import Tuple, List
-from .goal_position import goal_position
-class gridworld(object):
+from .targets import goal_position
+from .gridworld_interface import gridworld_interface
+class gridworld(gridworld_interface):
     def __init__(self, nrow, ncol, goal:goal_position):
         """
         This function initializes variables for a grid environment with a specified number of rows and
@@ -39,7 +40,6 @@ class gridworld(object):
         and obstacles in a grid environment.
         """
         r = -1
-        #print(s)
         if self.goal.isdone(s):
             r += 100
 
