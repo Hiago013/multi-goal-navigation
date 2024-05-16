@@ -1,7 +1,7 @@
-from .dijkstra import dijkstra
+from .strategies import dijkstra_search
 
 class shortest_path_context:
-    def __init__(self, strategy : dijkstra):
+    def __init__(self, strategy : dijkstra_search):
         self.strategy = strategy
 
     def set_strategy(self, strategy):

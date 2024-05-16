@@ -62,7 +62,8 @@ class path_view():
         # inicialização
         pygame.init()
         # display e tamanho da interface
-        janela = pygame.display.set_mode(((self.col*self.height) + self.col + 1, (self.row*self.width) + self.row+1))
+        janela = pygame.display.set_mode(((self.col*self.height) + self.col + 1,
+                                          (self.row*self.width) + self.row+1))
         # named window
         pygame.display.set_caption("Path Planning")
 
