@@ -1,6 +1,6 @@
 import numpy as np
-from environment.src import transition_position, goal_position
-from typing import Tuple
+from environment.src import transition_position
+from typing import Tuple, Dict
 
 # This class likely represents a data structure to store key-value pairs with the ability to access 
 # elements by their position in the dictionary.
@@ -10,7 +10,7 @@ class graph_2d():
                  ncol:int,
                  model:transition_position,
                  actions:list
-                 ):
+                 ) -> None:
         
         self.nrow = nrow
         self.ncol = ncol
@@ -28,7 +28,7 @@ class graph_2d():
             return False
         return True
                
-    def get_graph(self):
+    def get_graph(self) -> Dict[Tuple[int, int], Dict[Tuple[int, int], int]]:
         """
         The function `dict2D` creates a 2D dictionary representing a graph where each cell has a list of
         neighboring cells based on certain conditions.
@@ -36,11 +36,11 @@ class graph_2d():
         graph = dict()
         for row in range (self.nrow):
             for col in range (self.ncol):
-                graph[(row, col)] = list()
+                graph[(row, col)] = dict()
                 for action in self.actions:
                     next_state = self.model.step((row,col), action)
                     if self.__check_position(next_state):
-                        graph[(row,col)].append(next_state)        
+                        graph[(row,col)][next_state] = 1     
         return graph
     
     
