@@ -14,7 +14,7 @@ class graph_2d():
         
         self.nrow = nrow
         self.ncol = ncol
-        self.model = modelo
+        self.model = model
         self.actions = actions
 
     def __check_position(self, state:Tuple[int, int]) -> bool:

@@ -48,4 +48,3 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
         print(f'{state} : {graph[state]}')
 
 main(5, 5, 4, 3, 1000)
-
