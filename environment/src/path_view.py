@@ -2,7 +2,7 @@
 import pygame, sys
 import os
 from typing import Tuple, List
-import load_obstacles
+from .load_obstacles import load_obstacles
 
 
 BLACK = (0, 0, 0)
@@ -16,7 +16,7 @@ class path_view():
                  col:int,
                  width:int,
                  height:int,
-                 states:List[Tuple[int, int]],
+                 states:List[Tuple[int, int, int]],
                  margin = 1,
                  ):
 
@@ -59,21 +59,18 @@ class path_view():
             for col in range(self.col):
                 self.grid[row].append(0) 
         
-        # inicialização
-        pygame.init()
-        # display e tamanho da interface
+        pygame.init()   
         janela = pygame.display.set_mode(((self.col*self.height) + self.col + 1, (self.row*self.width) + self.row+1))
-        # named window
         pygame.display.set_caption("Path Planning")  
         
+        # obstacles
         obs = load_obstacles().load('environment/maps/map.txt')
+        for row, col in obs:
+            if 0 <= row < len(self.grid) and 0 <= col < len(self.grid[0]):
+                self.grid[row][col] = 4
         
-        for ob1, ob2 in obs:
-            if 0 <= ob1 < len(self.grid) and 0 <= ob2 < len(self.grid[0]):
-                self.grid[ob1][ob2] = 4
-        
+        # positions
         for row, col in self.states:
-            # verifica se linha e coluna estão no limite da grade
             if 0 <= row < len(self.grid) and 0 <= col < len(self.grid[0]):
                 self.grid[row][col] = 1 
             if (row, col) == (self.states[0]):
@@ -87,9 +84,7 @@ class path_view():
         timer = pygame.time.Clock()
         done = True        
         while done:
-            # eventos
             for evento in pygame.event.get(): 
-                # se o evento foi um pedido para sair
                 if evento.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
@@ -97,13 +92,11 @@ class path_view():
                 elif evento.type == 768:
                     done = False
                                     
-            # pinta a janela de BLACK
+                                    
             janela.fill(BLACK)
-            # desenha o grid na janela
             for row in range(self.row):
                 for col in range(self.col):
                     cor = WHITE
-
                     if self.grid[row][col] == 1:
                         cor = YELLOW
                     elif self.grid[row][col] == 2:
@@ -113,12 +106,9 @@ class path_view():
                     elif self.grid[row][col] == 4:
                         cor = BLACK
                 
-                    # desenha o grid e pinta se receber o evento
                     pygame.draw.rect(janela, cor, [(self.margin + self.width) * col + self.margin,
                     (self.margin + self.height) * row + self.margin, self.width, self.height])
                     
                     
-            # dispara o timer
             timer.tick(FPS)
-            # atualiza a janela
             pygame.display.flip()

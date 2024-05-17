@@ -12,6 +12,8 @@ from baseline.shortest_path_context import shortest_path_context
 
 dicti = graph_2d(nrow=5, ncol=5, model=transition_position, actions=[0, 1, 2, 3])
 graph = dicti.get_graph()
+
+
 strategy = astar_search()
 path_finder = shortest_path_context(strategy)
 path = path_finder.find_shortest_path(graph, (3,3), (0,0))
