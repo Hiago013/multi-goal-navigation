@@ -1,9 +1,11 @@
 import numpy as np
 from typing import Tuple, List
-from .targets import goal_position
+from ..targets import goal_position
 from .gridworld_interface import gridworld_interface
+from ..transition_models import transition_orientation
 class gridworld(gridworld_interface):
-    def __init__(self, nrow, ncol, goal:goal_position):
+    def __init__(self, nrow, ncol, goal:goal_position,
+                 transition_model : transition_orientation):
         """
         This function initializes variables for a grid environment with a specified number of rows and
         columns, a goal position, and transition matrices for position and orientation.
@@ -14,17 +16,11 @@ class gridworld(gridworld_interface):
 
         self.nrow = nrow
         self.ncol = ncol
+        self.n_psi = 4
 
         self.goal = goal
         self.obstacles = np.array([])
-
-        self.n_psi = 4
-
-        self.psi_transition = np.array([0, 1, -1])
-        self.position_transition = np.array([[1, 0],
-                  [0, 1],
-                  [-1, 0],
-                  [0, -1]])
+        self.transition_model = transition_model
 
 
     def set_obstacles(self, obstacles:List[Tuple[int, int]]):
@@ -53,7 +49,7 @@ class gridworld(gridworld_interface):
         """
         The function `isdone` checks if the current position (`c_r`, `c_c`) matches the goal position.
         """
-        if self.goal.isdone((self.c_r, self.c_c, self.c_psi)):
+        if self.goal.isdone(self.getState()):
             return True
         return False
 
@@ -62,38 +58,24 @@ class gridworld(gridworld_interface):
         The function `step` updates the position and orientation of an agent based on the action taken
         and returns the state, action, reward, and next state.
         """
-        position = np.array([self.c_r, self.c_c])
-        psi = self.c_psi
+        s = self.getState()
+        s_prime = self.transition_model.step(s, a)
 
-        s = np.array([self.c_r, self.c_c, self.c_psi])
+        if not self.__isingrid((s_prime[0], s_prime[1])):
+            s_prime = s
 
-        if a == 0:
-          new_position = self.position_transition[psi] + position
-          new_psi = psi
-        else:
-          new_position = position
-          new_psi = (psi + self.psi_transition[a]) % self.n_psi
+        self.__update_state(s_prime)
 
-
-        if not ((new_position >= 0).all() and (new_position[0] < self.nrow) and
-                (new_position[1] < self.ncol)):
-            new_position = position
-
-        self.c_r = new_position[0]
-        self.c_c = new_position[1]
-        self.c_psi = new_psi
-
-        s_prime = np.array([self.c_r, self.c_c, self.c_psi])
-        r = self.getReward(tuple(s_prime))
+        r = self.getReward(s_prime)
 
         return s,a,r,s_prime
 
-    def getState(self):
+    def getState(self) -> Tuple[int, int, int]:
         """
         The function `getState` returns a NumPy array containing the values of `c_r`, `c_c`, and
         `c_psi`.
         """
-        return np.array([self.c_r, self.c_c, self.c_psi])
+        return self.c_r, self.c_c, self.c_psi
 
     def reset(self):
         """
@@ -111,3 +93,16 @@ class gridworld(gridworld_interface):
         self.c_r = np.random.randint(self.nrow)
         self.c_c = np.random.randint(self.ncol)
         self.c_psi = np.random.randint(self.n_psi)
+
+    def __isingrid(self, position:Tuple[int, int]) -> bool:
+        """
+        The function `__isingrid` checks if a given position is within the grid.
+        """
+        row, col = position
+        return (row >= 0) and (col >= 0) and (row < self.nrow) and (col < self.ncol)
+
+    def __update_state(self, s_prime):
+        """
+        The function `__update_state` updates the current state of the agent.
+        """
+        self.c_r, self.c_c, self.c_psi = s_prime
