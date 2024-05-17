@@ -13,10 +13,10 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     """
     agent = qlearning(0.1, 0.99, 0.1, n_row, n_col, n_psi, n_action, exploration=egreedy_decay(1, -.001))
     goal = goal_position((4, 4))
-    env = gridworld(n_row, n_col, goal)
+    env = gridworld(n_row, n_col, goal, trans_model)
     obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
-    
+
     rewards = np.zeros(n_episodes)
     for episode in range(n_episodes):
         rr = 0
@@ -40,7 +40,7 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     print(f'Curves:{curves}   Dist:{dist}   Time:{time:.5f}s\n')
     plt.plot(rewards)
     plt.show()
-    
+
     dicti = graph_2d(nrow=5, ncol=5, model=transition_position, actions=[0, 1, 2, 3])
     graph = dicti.get_graph()
     for state in graph:
