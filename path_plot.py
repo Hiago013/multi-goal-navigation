@@ -1,7 +1,6 @@
 from environment import path_view, goal_position
-from environment import transition_orientation 
+from environment import transition_orientation
 from intelligence import states_positions
-
 import numpy as np
 
 def main():
@@ -11,7 +10,7 @@ def main():
     """
     goal = goal_position((4, 4))
     states = states_positions.run(qtable=np.load('qtable.npy'), target_state=goal,
-                                  start_state=(0, 0, 0), trans_model=transition_orientation )
+                                  start_state=(0, 0, 0), trans_model=transition_orientation)
     
     grid_instance = path_view(5, 5, 50, 50, states=states)
     grid_instance.main()

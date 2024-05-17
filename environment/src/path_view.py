@@ -39,13 +39,11 @@ class path_view():
         specified by the `path` parameter.
         """
         with open(path, 'w') as f:
-                        # Use a for loop to write each line of data to the file
                         for i in range(len(self.grid)):
                             for j in range(len(self.grid[0])):
                                 if self.grid[i][j] == 1 or self.grid[i][j] == 2 or self.grid[i][j] == 3:
                                     f.write(f'{i} {j}\n')
         pygame.quit()
-
 
 
     def main(self):

@@ -13,7 +13,7 @@ class states_positions(metrics_interface):
 
         n = 500
         next_state = start_state
-        states = [start_state]
+        states = [(start_state[0],start_state[1])]
         while not(target_state.isdone(next_state)) and n > 0:
             best_action = np.argmax(qtable[next_state])
             next_state = trans_model.step(next_state, best_action)
