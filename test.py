@@ -1,4 +1,4 @@
-from intelligence import qlearning, success_rate, all_metrics, egreedy_decay
+from intelligence import qlearning, success_rate, all_metrics, egreedy_decay, states_positions
 from environment import gridworld, load_obstacles, goal_position, goal_orientation
 from environment import transition_orientation as trans_model
 from baseline import graph_2d
@@ -36,8 +36,13 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
                          goal=env.goal, trans_model=trans_model)
     curves, dist, time = all_metrics.run(qtable=np.load('qtable.npy'), target_state=env.goal,
                                          start_state=(0,0,0), trans_model=trans_model)
+    
+    states = states_positions.run(qtable=np.load('qtable.npy'), target_state=env.goal, 
+                                start_state=(0,0,0), trans_model=trans_model)
+    print(states)
     print("Success rate:", sr)
     print(f'Curves:{curves}   Dist:{dist}   Time:{time:.5f}s\n')
+    
     plt.plot(rewards)
     plt.show()
 
@@ -47,4 +52,4 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
         print(f'{state} : {graph[state]}')
 
 
-main(5, 5, 4, 3, 1000)
+main(5, 5, 4, 3, 5000)

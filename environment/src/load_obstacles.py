@@ -7,7 +7,6 @@ class load_obstacles():
         """
         obstacles = []
         with open(path, 'r') as f:
-                # Use a for loop to write each line of data to the file
                 line = f.readline()
                 while line != '':
                     obstacles.append(tuple(map(int, line.split())))

@@ -41,7 +41,7 @@ class gridworld(gridworld_interface):
 
         for i in range(len(self.obstacles)):
             if np.all(self.obstacles[i] == s[0:2]):
-                r += -5
+                r += -50
                 break
         return r
 
