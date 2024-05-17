@@ -6,17 +6,18 @@ class multi_goal_position(target_interface):
     def __init__(self, goal: List[Tuple[int, int]]):
         assert len(goal) > 1, 'Tuple length must be greater then 1'
         self.__goal : List[Tuple[int, int]] = goal
-        self.__visitados : set = {}
+        self.__visitados : set = set()
 
     def isdone(self, state: Tuple[int, int, int]) -> bool:
         new_state = (state[0], state[1])
-        if new_state in self.__goal:
+        if (new_state in self.__goal) and not (new_state in self.__visitados):
             self.__visitados.add(new_state)
         return self.__doneiscompleted()
 
     def isgoal(self, state: Tuple[int, int, int]) -> bool:
         new_state = (state[0], state[1])
         if (new_state in self.__goal) and not (new_state in self.__visitados):
+            self.__visitados.add(new_state)
             return True
         return False
 
@@ -25,3 +26,6 @@ class multi_goal_position(target_interface):
 
     def get_goal(self):
         return self.__goal
+
+    def reset(self):
+        self.__visitados.clear()

@@ -11,10 +11,9 @@ class egreedy_decay(exploration_interface):
 
         epsilon = max(0.01, epsilon)
 
-        row, col, psi = state
         if np.random.rand(1)[0] < epsilon:
             a = np.random.randint(0, n_actions)
         else:
-            a = np.argmax(qtable[row, col, psi])
+            a = np.argmax(qtable[state])
         return a
 
