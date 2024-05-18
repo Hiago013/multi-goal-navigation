@@ -37,7 +37,7 @@ class gridworld_multigoal(gridworld_interface):
         """
         self.obstacles = np.array(obstacles)
 
-    def getReward(self, s:Tuple[int, int, int]):
+    def getReward(self, s:Tuple[int, int, int], action = int):
         """
         The function `getReward` calculates the reward based on the current state `s`, the goal state,
         and obstacles in a grid environment.
@@ -46,6 +46,9 @@ class gridworld_multigoal(gridworld_interface):
         if self.goal.isgoal(s):
             r += 100
             self.visited[(s[0], s[1])] = 1
+
+        if action != 0:
+            r += -5
 
         for i in range(len(self.obstacles)):
             if np.all(self.obstacles[i] == s[0:2]):
@@ -73,7 +76,7 @@ class gridworld_multigoal(gridworld_interface):
         if not self.__isingrid((s_prime[0], s_prime[1])):
             s_prime = s
 
-        r = self.getReward(s_prime)
+        r = self.getReward(s_prime, a)
 
 
         self.__update_pose(s_prime)

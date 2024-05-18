@@ -13,10 +13,10 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     The main function implements Q-learning algorithm to train an agent in a gridworld environment with
     obstacles and plots the rewards obtained over multiple episodes.
     """
-    targets = [(3, 3), (2, 2)]
+    targets = [(5, 1), (1, 7), (4,5), (7,9)]
     state_repr = multi_pose_state(0, 0, 0, n_row, n_col, n_psi, targets)
     print(state_repr.getShape())
-    agent = qlearning(0.1, 0.99, 0.1, state_repr, n_action)#, exploration=egreedy_decay(1, -0.1/n_episodes))
+    agent = qlearning(0.1, 0.99, 0.1, state_repr, n_action, exploration=egreedy_decay(1, -0.9/n_episodes))
     goal = multi_goal_position(targets)
     env = gridworld_multigoal(n_row, n_col, goal, trans_model, state_repr)
     obs = load_obstacles().load('environment/maps/map.txt')
@@ -24,6 +24,7 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
 
     rewards = np.zeros(n_episodes)
     for episode in range(n_episodes):
+        print('Episode:', episode, end='\r')
         rr = 0
         while not env.isdone():
             s = env.getState()
@@ -52,4 +53,4 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     plt.show()
 
 
-main(5, 5, 4, 3, 1000)
+main(11, 11, 4, 3, 80000)
