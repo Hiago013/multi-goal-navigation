@@ -24,12 +24,6 @@ class multi_goal_position(target_interface):
             return True
         return False
 
-    def __doneiscompleted(self):
-        return len(self.__visitados) == len(self.__goal)
-
-    def __update_state(self, state: Tuple[int, int]):
-        self.visited_state[state] = 1
-
     def get_goal(self):
         return self.__goal
 
@@ -40,3 +34,9 @@ class multi_goal_position(target_interface):
         self.__visitados.clear()
         self.visited_state = dict(zip(self.__goal,
                                       [0]*len(self.__goal)))
+
+    def __doneiscompleted(self):
+        return len(self.__visitados) == len(self.__goal)
+
+    def __update_state(self, state: Tuple[int, int]):
+        self.visited_state[state] = 1
