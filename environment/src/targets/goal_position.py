@@ -10,5 +10,8 @@ class goal_position(target_interface):
     def isdone(self, state: Tuple[int, int, int]) -> bool:
         return (state[0], state[1]) == self.__goal
 
+    def isgoal(self, state: Tuple[int, int, int]) -> bool:
+        return self.isdone(state)
+
     def get_goal(self):
         return self.__goal

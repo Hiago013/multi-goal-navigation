@@ -3,7 +3,10 @@ from typing import Tuple
 
 
 class target_interface(ABC):
-    
+
     @abstractmethod
     def isdone(self):
+        pass
+    @abstractmethod
+    def isgoal(self):
         pass
