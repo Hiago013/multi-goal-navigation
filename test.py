@@ -1,5 +1,9 @@
-from intelligence import qlearning, success_rate, all_metrics, egreedy_decay, states_positions
-from environment import gridworld, load_obstacles, goal_position, multi_goal_position, gridworld_multigoal
+from intelligence import qlearning,  egreedy_decay
+
+from metrics import success_rate, all_metrics, states_positions
+from targets import goal_position, multi_goal_position
+
+from environment import gridworld, load_obstacles, gridworld_multigoal
 from environment import transition_orientation as trans_model
 
 from states import pose_state, multi_pose_state

@@ -2,7 +2,7 @@ import numpy as np
 from typing import Tuple, List
 from states import pose_state, multi_pose_state
 from .gridworld_interface import gridworld_interface
-from ..targets import multi_goal_position
+from targets import multi_goal_position
 from ..transition_models import transition_orientation
 
 class gridworld_multigoal(gridworld_interface):

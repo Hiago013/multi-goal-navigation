@@ -1,8 +1,10 @@
-from .state_interface import state_interface
+from.multi_state_interface import multi_state_interface
 from typing import Tuple, List
 
-class multi_pose_state(state_interface):
-    def __init__(self, row:int, col:int, psi:int, max_row:int, max_col:int, max_psi:int, targets:List[Tuple[int, int]]) -> None:
+class multi_pose_state(multi_state_interface):
+    def __init__(self, row:int, col:int, psi:int,
+                 max_row:int, max_col:int, max_psi:int,
+                 targets:List[Tuple[int, int]]) -> None:
         """
         This function initializes the row and column of an agent in a grid environment.
         """

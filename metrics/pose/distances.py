@@ -1,5 +1,6 @@
 from .metrics_interface import metrics_interface
-from environment.src import goal_position, transition_orientation
+from environment.src import transition_orientation
+from targets import goal_position
 from typing import Tuple
 import numpy as np
 

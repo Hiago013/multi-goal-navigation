@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Tuple, List
-from ..targets import goal_position
+from targets import goal_position
 from .gridworld_interface import gridworld_interface
 from ..transition_models import transition_orientation
 class gridworld(gridworld_interface):
