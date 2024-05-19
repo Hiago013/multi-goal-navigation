@@ -1,5 +1,5 @@
-from ..targets import multi_goal_position
-from ..states import multi_pose_state
+from targets import multi_goal_position
+from states import multi_pose_state
 from typing import Tuple
 
 class multi_target():

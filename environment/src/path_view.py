@@ -14,9 +14,9 @@ class path_view():
     def __init__(self,
                  row:int,
                  col:int,
-                 width:int,
-                 height:int,
                  states:List[Tuple[int, int, int]],
+                 width : int = 50,
+                 height : int = 50,
                  margin = 1,
                  ):
 
@@ -46,7 +46,7 @@ class path_view():
         pygame.quit()
 
 
-    def main(self):
+    def run(self):
         """
         The main function initializes a grid, sets up a Pygame window for path planning, handles mouse
         events to update the grid, and continuously updates the display.
@@ -75,7 +75,6 @@ class path_view():
                 self.grid[row][col] = 2 
             if (row, col) == (self.states[-1]):
                 self.grid[row][col] = 3
-            print("Coordinates: ", row, col)
             
             
         FPS = 30

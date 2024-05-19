@@ -4,11 +4,12 @@ from states import pose_state, multi_pose_state
 from .gridworld_interface import gridworld_interface
 from targets import multi_goal_position
 from ..transition_models import transition_orientation
+from target_state import multi_target
 
 class gridworld_multigoal(gridworld_interface):
-    def __init__(self, nrow, ncol, goal:multi_goal_position,
+    def __init__(self, nrow, ncol,
                  transition_model : transition_orientation,
-                 state_repr:multi_pose_state):
+                 target_state_repr: multi_target):
         """
         This function initializes variables for a grid environment with a specified number of rows and
         columns, a goal position, and transition matrices for position and orientation.
@@ -17,17 +18,14 @@ class gridworld_multigoal(gridworld_interface):
         self.c_c = 0
         self.c_psi = 0
 
-        self.visited = dict(zip(state_repr.getTargets(), [0]*state_repr.n_targets))
-
         self.nrow = nrow
         self.ncol = ncol
         self.n_psi = 4
 
 
-        self.goal = goal
+        self.target_state_repr : multi_target = target_state_repr
         self.obstacles = np.array([])
         self.transition_model = transition_model
-        self.state_repr : multi_pose_state = state_repr
 
 
     def set_obstacles(self, obstacles:List[Tuple[int, int]]):
@@ -43,9 +41,8 @@ class gridworld_multigoal(gridworld_interface):
         and obstacles in a grid environment.
         """
         r = -1
-        if self.goal.isgoal(s):
+        if self.target_state_repr.isgoal(s):
             r += 100
-            self.visited[(s[0], s[1])] = 1
 
         if action != 0:
             r += -5
@@ -60,7 +57,7 @@ class gridworld_multigoal(gridworld_interface):
         """
         The function `isdone` checks if the current position (`c_r`, `c_c`) matches the goal position.
         """
-        if self.goal.isdone(self.getState()):
+        if self.target_state_repr.isdone(self.getState()):
             return True
         return False
 
@@ -78,11 +75,8 @@ class gridworld_multigoal(gridworld_interface):
 
         r = self.getReward(s_prime, a)
 
-
         self.__update_pose(s_prime)
-        self.__update_state(s_prime)
         new_state = self.getState()
-
 
 
         return old_state, a, r, new_state
@@ -92,7 +86,7 @@ class gridworld_multigoal(gridworld_interface):
         The function `getState` returns a NumPy array containing the values of `c_r`, `c_c`, and
         `c_psi`.
         """
-        return self.state_repr.getState()
+        return self.target_state_repr.pose2state(self.getPose())
 
     def getPose(self):
         """
@@ -107,10 +101,7 @@ class gridworld_multigoal(gridworld_interface):
         self.c_r = 0
         self.c_c = 0
         self.c_psi = 0
-        self.visited = dict(zip(self.state_repr.getTargets(), [0]*self.state_repr.n_targets))
-        self.goal.reset()
-        self.state_repr.reset()
-        self.__update_state((self.c_r, self.c_c, self.c_psi))
+        self.target_state_repr.reset()
 
     def exploring_starts(self):
         """
@@ -120,14 +111,9 @@ class gridworld_multigoal(gridworld_interface):
         self.c_r = np.random.randint(self.nrow)
         self.c_c = np.random.randint(self.ncol)
         self.c_psi = np.random.randint(self.n_psi)
-        s = (self.c_r, self.c_c, self.c_psi)
-        self.visited = dict(zip(self.state_repr.getTargets(), [0]*self.state_repr.n_targets))
-        self.goal.reset()
-        self.state_repr.reset()
-        self.__update_state((self.c_r, self.c_c, self.c_psi))
 
-        if self.goal.isgoal(s):
-            self.visited[(s[0], s[1])] = 1
+        self.target_state_repr.reset()
+        self.target_state_repr.isgoal(self.getPose())
 
     def __isingrid(self, position:Tuple[int, int]) -> bool:
         """
@@ -136,13 +122,6 @@ class gridworld_multigoal(gridworld_interface):
         row, col = position
         return (row >= 0) and (col >= 0) and (row < self.nrow) and (col < self.ncol)
 
-    def __update_state(self, pose):
-        """
-        The function `__update_state` updates the current pose of the agent.
-        """
-        state = list(pose) + list(self.visited.values())
-        state = tuple(state)
-        self.state_repr.setState(state)
 
     def __update_pose(self, pose:Tuple[int, int, int]):
         """

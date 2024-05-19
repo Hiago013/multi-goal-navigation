@@ -16,7 +16,7 @@ class transition_position(model_trasition_interface):
                                         [-1, 0],  
                                         [0, -1]])  
         
-        row, col = state
+        row, col = state[0], state[1]
         if action >= 0 and action < len(position_transition):   #[0,1,2,3]
             new_position = position_transition[action] + np.array([row, col])
             new_state = tuple(new_position)

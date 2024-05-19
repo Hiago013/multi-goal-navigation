@@ -3,6 +3,8 @@ from intelligence import qlearning,  egreedy_decay
 from metrics import success_rate, all_metrics, states_positions
 from targets import goal_position, multi_goal_position
 
+from target_state import multi_target
+
 from environment import gridworld, load_obstacles, gridworld_multigoal
 from environment import transition_orientation as trans_model
 
@@ -17,12 +19,17 @@ def main(n_row, n_col, n_psi, n_action, n_episodes):
     The main function implements Q-learning algorithm to train an agent in a gridworld environment with
     obstacles and plots the rewards obtained over multiple episodes.
     """
-    targets = (5, 1)
-    state_repr = pose_state(0, 0, 0, n_row, n_col, n_psi)#, targets)
+    targets = [(5, 1), (1, 7), (4,5), (7,9)]
+    state_repr = multi_pose_state(0, 0, 0, n_row, n_col, n_psi, targets)
+    goal = multi_goal_position(targets)
+    
+    multi_target_gd = multi_target(goal, state_repr)
+    
+    
     print(state_repr.getShape())
     agent = qlearning(0.1, 0.99, 0.1, state_repr, n_action)#, exploration=egreedy_decay(1, -0.9/n_episodes))
-    goal = goal_position(targets)
-    env = gridworld(n_row, n_col, goal, trans_model)#, state_repr)
+    
+    env = gridworld_multigoal(n_row, n_col, trans_model, multi_target_gd)
     obs = load_obstacles().load('environment/maps/map.txt')
     env.set_obstacles(obs)
 

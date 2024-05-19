@@ -14,8 +14,8 @@ class transition_orientation(model_trasition_interface):
                     [-1, 0],
                     [0, -1]])
 
-        position = state[0:2]
-        psi = state[-1]
+        position = (state[0], state[1])
+        psi = state[2]
 
         if action == 0:
             new_position = position_transition[psi] + position
