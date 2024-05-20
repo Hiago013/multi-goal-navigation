@@ -8,23 +8,26 @@ class multi_target():
         self.target_repr = target_repr
         self.state_repr = state_repr
         self.__shape = state_repr.getShape()
-    
+
     def isgoal(self, pose: Tuple[int, int, int]) -> bool:
         return self.target_repr.isgoal(pose)
-    
+
     def isdone(self, pose: Tuple[int, int, int]) -> bool:
         return self.target_repr.isdone(pose)
-    
+
     def pose2state(self, pose : Tuple[int, int, int]):
         state = list(pose)
         state.extend(self.target_repr.get_visited_state())
         return tuple(state)
-    
+
     def get_shape(self):
         return self.__shape
-    
+
+    def set_state(self, state):
+        self.state_repr.setState(state)
+        self.target_repr.set_visited_state(state[3:])
+
     def reset(self):
         self.state_repr.reset()
         self.target_repr.reset()
-    
-    
+

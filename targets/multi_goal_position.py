@@ -10,10 +10,6 @@ class multi_goal_position(target_interface):
         self.visited_state = dict(zip(goal, [0]*len(goal)))
 
     def isdone(self, state: Tuple[int, int, int]) -> bool:
-        new_state = (state[0], state[1])
-        if (new_state in self.__goal) and not (new_state in self.__visitados):
-            self.__visitados.add(new_state)
-            self.__update_state(new_state)
         return self.__doneiscompleted()
 
     def isgoal(self, state: Tuple[int, int, int]) -> bool:
@@ -29,6 +25,10 @@ class multi_goal_position(target_interface):
 
     def get_visited_state(self):
         return list(self.visited_state.values())
+
+    def set_visited_state(self, state: List[int]):
+        self.visited_state = dict(zip(self.__goal, state))
+        self.__visitados = set([k for k, v in self.visited_state.items() if v == 1])
 
     def reset(self):
         self.__visitados.clear()

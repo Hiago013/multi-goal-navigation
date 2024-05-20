@@ -19,7 +19,7 @@ class qlearning():
         self.Q = np.zeros(state_action)
 
         if exploration is None:
-            self.exploration = egreedy_classic(0.1)
+            self.exploration = egreedy_classic(self.epsilon)
         else:
             self.exploration = exploration
 

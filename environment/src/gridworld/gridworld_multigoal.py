@@ -27,7 +27,9 @@ class gridworld_multigoal(gridworld_interface):
         self.obstacles = np.array([])
         self.obstaclemap = np.zeros((nrow, ncol), dtype=np.uint8)
         self.transition_model = transition_model
-        
+
+        self.non_converged = []
+
 
 
     def set_obstacles(self, obstacles:List[Tuple[int, int]]):
@@ -36,11 +38,11 @@ class gridworld_multigoal(gridworld_interface):
         representing coordinates.
         """
         self.obstacles = np.array(obstacles)
-        
+
         for r, c in obstacles:
             self.obstaclemap[r, c] = 1
-            
-        
+
+
 
     def getReward(self, s:Tuple[int, int, int], action = int):
         """
@@ -83,7 +85,7 @@ class gridworld_multigoal(gridworld_interface):
             s_prime = s
 
         r = self.getReward(s_prime, a)
-        
+
         if r < -20: # teste
             s_prime = s
 
@@ -123,13 +125,27 @@ class gridworld_multigoal(gridworld_interface):
         self.c_r = np.random.randint(self.nrow)
         self.c_c = np.random.randint(self.ncol)
         self.c_psi = np.random.randint(self.n_psi)
-        
+
         while (self.c_r, self.c_c) in self.obstacles:
             self.c_r = np.random.randint(self.nrow)
             self.c_c = np.random.randint(self.ncol)
-            
+
         self.target_state_repr.reset()
-        self.target_state_repr.isgoal(self.getPose())
+        #self.target_state_repr.isgoal(self.getPose())
+
+    def exploring_non_converged(self):
+        idx = np.random.randint(len(self.non_converged))
+        state = self.non_converged[idx]
+        self.c_r = state[0]
+        self.c_c = state[1]
+        self.c_psi = state[2]
+        self.target_state_repr.reset()
+        self.target_state_repr.set_state(state)
+        #self.target_state_repr.isgoal(self.getPose())
+
+    def set_non_converged(self, states:List[Tuple[int, int, int, int]]):
+        self.non_converged = states
+
 
     def __isingrid(self, position:Tuple[int, int]) -> bool:
         """
@@ -144,5 +160,5 @@ class gridworld_multigoal(gridworld_interface):
         The function `__update_pose` updates the current pose of the agent.
         """
         self.c_r, self.c_c, self.c_psi = pose
-    
-        
+
+
