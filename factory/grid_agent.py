@@ -21,12 +21,12 @@ class grid_agent():
         for episode in range(episodes):
             print('Episode:', episode, end='\r')
             rr = 0
+            s = self.__environment.getState()
             while not self.__environment.isdone():
-                s = self.__environment.getState()
                 a = self.__intelligence.action(s, episode)
-                self.__environment.getReward((s[0], s[1], s[2]), a)
                 s, a, r, s_prime = self.__environment.step(a)
                 self.__intelligence.update_q(s,a,r,s_prime)
+                s = s_prime
                 rr += r
             rewards[episode] = rr
             self.__environment.reset()
