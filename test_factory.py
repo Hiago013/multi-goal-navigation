@@ -9,7 +9,7 @@ def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=
     context = grid_agent(intelligence, environment)
     
     init = time()
-    context.train(80000)
+    context.train(90000, show=False)
     fim = time()
     start = (0, 0, 0, 0, 0, 0, 0)
     context.get_stats(start)

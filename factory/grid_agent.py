@@ -19,7 +19,8 @@ class grid_agent():
     def train(self, episodes, save = True, show = True):
         rewards = np.zeros(episodes)
         for episode in range(episodes):
-            print('Episode:', episode, end='\r')
+            if (episode % 500) == 0:
+                print('Episode:', episode, end='\r')
             rr = 0
             s = self.__environment.getState()
             while not self.__environment.isdone():
