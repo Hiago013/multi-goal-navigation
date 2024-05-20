@@ -28,4 +28,3 @@ class multi_target():
         self.target_repr.reset()
     
     
-    

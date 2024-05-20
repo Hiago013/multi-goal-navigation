@@ -9,9 +9,7 @@ class egreedy_decay(exploration_interface):
     def choose_action(self, t, n_actions, state, qtable):
         epsilon = self.initial_value + self.angular_decay * t
 
-        epsilon = max(0.01, epsilon)
-
-        if np.random.rand(1)[0] < epsilon:
+        if np.random.rand() < epsilon:
             a = np.random.randint(0, n_actions)
         else:
             a = np.argmax(qtable[state])

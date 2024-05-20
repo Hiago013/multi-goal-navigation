@@ -25,7 +25,9 @@ class gridworld_multigoal(gridworld_interface):
 
         self.target_state_repr : multi_target = target_state_repr
         self.obstacles = np.array([])
+        self.obstaclemap = np.zeros((nrow, ncol), dtype=np.uint8)
         self.transition_model = transition_model
+        
 
 
     def set_obstacles(self, obstacles:List[Tuple[int, int]]):
@@ -34,6 +36,11 @@ class gridworld_multigoal(gridworld_interface):
         representing coordinates.
         """
         self.obstacles = np.array(obstacles)
+        
+        for r, c in obstacles:
+            self.obstaclemap[r, c] = 1
+            
+        
 
     def getReward(self, s:Tuple[int, int, int], action = int):
         """
@@ -47,10 +54,12 @@ class gridworld_multigoal(gridworld_interface):
         if action != 0:
             r += -5
 
-        for i in range(len(self.obstacles)):
-            if np.all(self.obstacles[i] == s[0:2]):
-                r += -50
-                break
+        if self.obstaclemap[s[0], s[1]]:
+            r += -50
+        #for i in range(len(self.obstacles)):
+        #    if np.all(self.obstacles[i] == s[0:2]):
+        #        r += -50
+        #        break
         return r
 
     def isdone(self):

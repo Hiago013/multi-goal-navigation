@@ -1,18 +1,21 @@
 from .model_transition_interface import model_trasition_interface
 import numpy as np
 
+psi_transition = np.array([0, 1, -1])
+position_transition = np.array([[1, 0],
+                    [0, 1],
+                    [-1, 0],
+                    [0, -1]])
 class transition_orientation(model_trasition_interface):
+    
+    
     @staticmethod
     def step(state, action):
         """
         The function `model_trans` takes a state and an action as input and returns a new state based on the
         action taken in a simple 2D grid world with four possible actions.
         """
-        psi_transition = np.array([0, 1, -1])
-        position_transition = np.array([[1, 0],
-                    [0, 1],
-                    [-1, 0],
-                    [0, -1]])
+        
 
         position = (state[0], state[1])
         psi = state[2]

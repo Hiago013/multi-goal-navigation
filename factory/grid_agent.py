@@ -4,7 +4,7 @@ from environment import gridworld_multigoal, path_view
 from intelligence import qlearning
 from metrics.pose_multigoal import multi_planning, multi_allmetrics, multi_success_rate
 from environment.src.transition_models import transition_orientation
-
+from time import time
 
 class grid_agent():
     def __init__(self, intelligence : qlearning, environment : gridworld_multigoal):
@@ -24,6 +24,7 @@ class grid_agent():
             while not self.__environment.isdone():
                 s = self.__environment.getState()
                 a = self.__intelligence.action(s, episode)
+                self.__environment.getReward((s[0], s[1], s[2]), a)
                 s, a, r, s_prime = self.__environment.step(a)
                 self.__intelligence.update_q(s,a,r,s_prime)
                 rr += r
