@@ -52,7 +52,6 @@ class grid_agent():
         if not start_state:
             start_state= self.start_state
         path = multi_planning.run(np.load('qtable.npy'), self.__environment.target_state_repr, start_state, transition_orientation)
-        print(path)
         pv = path_view(self.__row, self.__col, path)
         pv.run()
 
@@ -67,6 +66,12 @@ class grid_agent():
         print(f'Distance: {metrics["distance"]} (m)')
         print(f'Number of turns: {metrics["curve"]}')
         print(f'Success Rate: {sr:.2f}')
+
+    def get_path(self, start_state = None):
+        if not start_state:
+            start_state= self.start_state
+        return multi_planning.run(np.load('qtable.npy'), self.__environment.target_state_repr, start_state, transition_orientation)
+
 
     def __get_success_rate(self):
         return multi_success_rate.run(np.load('qtable.npy'), self.__environment.target_state_repr, transition_orientation)
