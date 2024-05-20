@@ -4,3 +4,4 @@ from .multi_distance import multi_distance
 from .multi_planning import multi_planning
 from .multi_planningtime import multi_planningtime
 from .multi_allmetrics import multi_allmetrics
+from .multi_success_rate import multi_success_rate

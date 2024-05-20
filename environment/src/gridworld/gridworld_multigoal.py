@@ -74,6 +74,9 @@ class gridworld_multigoal(gridworld_interface):
             s_prime = s
 
         r = self.getReward(s_prime, a)
+        
+        if r < -20: # teste
+            s_prime = s
 
         self.__update_pose(s_prime)
         new_state = self.getState()
@@ -111,7 +114,11 @@ class gridworld_multigoal(gridworld_interface):
         self.c_r = np.random.randint(self.nrow)
         self.c_c = np.random.randint(self.ncol)
         self.c_psi = np.random.randint(self.n_psi)
-
+        
+        while (self.c_r, self.c_c) in self.obstacles:
+            self.c_r = np.random.randint(self.nrow)
+            self.c_c = np.random.randint(self.ncol)
+            
         self.target_state_repr.reset()
         self.target_state_repr.isgoal(self.getPose())
 
@@ -128,3 +135,5 @@ class gridworld_multigoal(gridworld_interface):
         The function `__update_pose` updates the current pose of the agent.
         """
         self.c_r, self.c_c, self.c_psi = pose
+    
+        

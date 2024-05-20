@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from environment import gridworld_multigoal, path_view
 from intelligence import qlearning
-from metrics.pose_multigoal import multi_planning, multi_allmetrics
+from metrics.pose_multigoal import multi_planning, multi_allmetrics, multi_success_rate
 from environment.src.transition_models import transition_orientation
 
 
@@ -40,6 +40,7 @@ class grid_agent():
         if not start_state:
             start_state= self.start_state 
         path = multi_planning.run(np.load('qtable.npy'), self.__environment.target_state_repr, start_state, transition_orientation)
+        print(path)
         pv = path_view(self.__row, self.__col, path)
         pv.run()
     
@@ -47,9 +48,12 @@ class grid_agent():
         if not start_state:
             start_state= self.start_state 
         metrics = multi_allmetrics.run(np.load('qtable.npy'), self.__environment.target_state_repr, start_state, transition_orientation)
-        metrics['runtime']
+        sr = multi_success_rate.run(np.load('qtable.npy'), self.__environment.target_state_repr, transition_orientation)
         print(f'----------------------- Stats Starting in the state {start_state} -----------------------')
         print(f'Planning time: {metrics["runtime"]:.2f} (ms)')
         print(f'Distance: {metrics["distance"]} (m)')
         print(f'Number of turns: {metrics["curve"]}')
+        print(f'Success Rate: {sr:.2f}')
+        
+        
             
