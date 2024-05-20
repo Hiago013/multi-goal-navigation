@@ -41,3 +41,12 @@ Thumbs.db
 __pycache__/
 *.pyc
 *.npy
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
