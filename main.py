@@ -16,15 +16,15 @@ planner = factory_context.run(11, 11, 4, 3, [(5, 1), (4, 5), (1, 7), (7, 9)])
 
 pose = np.zeros(3, dtype=np.float32) # x, y, yaw
 Rot = np.eye(2)
-displaced_point = 5/100
+displaced_point = 10/100
 
 def talker():
-    path : np.ndarray = np.array(planner.get_path()) / 2
+    path : np.ndarray = np.array(planner.get_path()) / 2 + .25
     path : list = path.tolist()[::-1]
 
-    path = list([[0, 0], [5.20, 0], [5.0, -2], [5.20, 0]])
+    #path = list([[0, 0], [5.20, 0], [5.0, -2], [5.20, 0]])
 
-    vel_d = .1
+    vel_d = .12
     Xd = np.array(path.pop())
 
 
