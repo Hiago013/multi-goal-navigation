@@ -58,10 +58,7 @@ class gridworld_multigoal(gridworld_interface):
 
         if self.obstaclemap[s[0], s[1]]:
             r += -100
-        #for i in range(len(self.obstacles)):
-        #    if np.all(self.obstacles[i] == s[0:2]):
-        #        r += -50
-        #        break
+
         return r
 
     def isdone(self):
