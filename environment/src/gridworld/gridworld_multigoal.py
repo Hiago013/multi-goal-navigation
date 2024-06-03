@@ -54,7 +54,7 @@ class gridworld_multigoal(gridworld_interface):
             r += 100
 
         if action != 0:
-            r += -3
+            r += -4.55
 
         if self.obstaclemap[s[0], s[1]]:
             r += -100

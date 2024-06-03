@@ -11,7 +11,7 @@ def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=
     init = time()
     context.train(50000, show=False)
     fim = time()
-    start = (0, 0, 0, 0, 0, 0, 0)
+    start = (0, 0, 1, 0, 0, 0, 0)
     context.get_stats(start)
     print(f'Training time: {(fim - init):.2f}')
     context.show(start)
@@ -19,4 +19,4 @@ def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=
 
 
 
-main(11, 11, 4, 3, [(5, 1), (4, 5), (1, 7), (7, 9)])
+main(16, 10, 4, 3, [(6, 2), (4, 5), (14, 3), (12, 7)])
