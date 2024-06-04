@@ -11,27 +11,27 @@ def main():
     The function `main()` creates a grid instance with specified dimensions and states, displays it, and
     saves it to a text file.
     """
-    
+
     targets = [(1, 1), (3, 3)]#[(5, 1), (1, 7), (4,5), (7,9)]
     goal = multi_goal_position(targets)
     state_repr = multi_pose_state(0, 0, 0, 11, 11, 4, targets)
-    
+
     mtarget = multi_target(goal, state_repr)
-    
+
     curves = multi_allmetrics.run(np.load('qtable.npy'), mtarget, (0 , 0 , 1, 0, 0, ), transition_orientation)
     print(curves)
-    
+
     states = states_positions.run(qtable=np.load('qtable.npy'), target_state=goal,
                                    start_state=(0, 0, 1, 0, 0), trans_model=transition_orientation)
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     grid_instance = path_view(5, 5, 50, 50, states=states)
-    grid_instance.main()
+    grid_instance.run()
     grid_instance.save('environment/maps/path.txt')
 
 if __name__== "__main__":

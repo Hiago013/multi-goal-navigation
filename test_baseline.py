@@ -1,11 +1,11 @@
 from baseline import graph_2d
-from environment import transition_position, load_obstacles
+from environment import transition_position, load_obstacles, path_view
 from baseline import dijkstra_search
 from baseline import astar_search
 from baseline import bfs_search
 from baseline.shortest_path_context import shortest_path_context
 import numpy as np
-
+from metrics_baseline import metrics_baseline as mbl
 target_set = set([(6, 2), (4, 5), (14, 3), (12, 7)])
 start_position = (0, 0)
 
@@ -17,10 +17,11 @@ dicti = graph_2d(nrow = 16,
                  obstacles = obstacles)
 
 graph = dicti.get_graph()
-strategy = astar_search()
+strategy = bfs_search()
 path_finder = shortest_path_context(strategy)
 
 final_path = [start_position]
+
 
 while len(target_set) > 0:
     distances = list(map(lambda X: np.sqrt((X[0] - start_position[0])**2 + (X[1] - start_position[1])**2), target_set))
@@ -34,3 +35,8 @@ while len(target_set) > 0:
         if item in path:
             target_set.remove(item)
 print(final_path)
+
+print(mbl.run(final_path))
+
+grid_instance = path_view(16, 10, states=final_path)
+grid_instance.run()
