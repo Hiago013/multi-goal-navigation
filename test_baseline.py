@@ -7,21 +7,30 @@ from baseline.shortest_path_context import shortest_path_context
 import numpy as np
 
 target_set = set([(6, 2), (4, 5), (14, 3), (12, 7)])
-verifier = [0 for _ in range(len(target_set))]
-look_up_target = np.array(list(target_set))
-lookup_target_check = dict(zip(target_set, verifier))
 start_position = (0, 0)
 
-
 obstacles = load_obstacles().load('environment/maps/map.txt')
-dicti = graph_2d(nrow=16, ncol=10, model=transition_position, actions = [0, 1, 2, 3], obstacles = obstacles)
+dicti = graph_2d(nrow = 16,
+                 ncol = 10,
+                 model = transition_position,
+                 actions = [0, 1, 2, 3],
+                 obstacles = obstacles)
+
 graph = dicti.get_graph()
 strategy = astar_search()
 path_finder = shortest_path_context(strategy)
 
-distances = list(map(lambda X: np.sqrt((X[0] - start_position[0])**2 + (X[1] - start_position[1])**2), target_set))
-argmin_dist = np.argmin(distances)
+final_path = [start_position]
 
-path = path_finder.find_shortest_path(graph, (0, 0), (12, 7))
-
-print(path)
+while len(target_set) > 0:
+    distances = list(map(lambda X: np.sqrt((X[0] - start_position[0])**2 + (X[1] - start_position[1])**2), target_set))
+    argmin_dist = np.argmin(distances)
+    target = list(target_set)[argmin_dist]
+    target_set.remove(target)
+    path = path_finder.find_shortest_path(graph, start_position, target)
+    start_position = target
+    final_path += path[1:] # remove the first element of the
+    for item in target_set:
+        if item in path:
+            target_set.remove(item)
+print(final_path)
