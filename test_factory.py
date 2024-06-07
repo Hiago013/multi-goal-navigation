@@ -2,21 +2,36 @@ from factory import agent_const_epsilon as agent
 from factory import env_multigoal_pose as env
 from factory import grid_agent
 from time import time
+import pandas as pd
+import numpy as np
 
 def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=0.1):
-    intelligence = agent.create(alpha, gamma, epsilon, n_action, n_row, n_col, n_psi, targets)
-    environment = env.create(n_row, n_col, n_psi, targets)
-    context = grid_agent(intelligence, environment)
+    data_header = ['Planning time', 'Path length', 'Curves', 'Success rate', 'Training time']
+    data_deploy = []
+    for i in range(11, 21):
+        intelligence = agent.create(alpha, gamma, epsilon, n_action, n_row, n_col, n_psi, targets)
+        environment = env.create(n_row, n_col, n_psi, targets)
+        context = grid_agent(intelligence, environment)
+        init = time()
+        rewards = context.train(50000, show=False)
+        fim = time()
+        for r in range(n_row):
+            for c in range(n_col):
+                for p in range(n_psi):
+                    if not environment.obstaclemap[r,c]:
+                        start = (r, c, p, 0, 0, 0, 0)
+                        values = context.get_stats(start)
+                        data_deploy.append(values)
+        data_deploy_df = pd.DataFrame(data_deploy)
+        data_deploy_df[3] = context.get_success_rate()[0]
+        data_deploy_df[4] = fim - init
+        data_deploy_df.columns = data_header
+        data_deploy_df.to_excel(f'data_training/data_deploy_{i}.xlsx')
+        np.save(f'data_training/rewards_{i}.npy', rewards)
+        print(f'{i}th Training time: {(fim - init):.2f}')
+        #context.show(start)
 
-   # init = time()
-   # context.train(50000, show=False)
-   # fim = time()
-    start = (15, 9, 2, 0, 0, 0, 0)
-    context.get_stats(start)
-   # print(f'Training time: {(fim - init):.2f}')
-    context.show(start)
 
 
 
-
-main(16, 10, 4, 3, [(3, 2), (5, 8), (8, 2), (12, 5)])
+main(16, 10, 4, 3, [(6, 2), (4, 5), (14, 3), (12, 7)])

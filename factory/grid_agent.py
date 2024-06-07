@@ -16,7 +16,7 @@ class grid_agent():
 
         self.start_state = tuple([0 for _ in self.__environment.target_state_repr.get_shape()])
 
-    def train(self, episodes, save = True, show = True):
+    def train(self, episodes, save = True, show = True) -> np.ndarray:
         rewards = np.zeros(episodes)
         for episode in range(episodes):
             if (episode % 500) == 0:
@@ -47,6 +47,7 @@ class grid_agent():
         if show:
             plt.plot(rewards)
             plt.show()
+        return rewards
 
     def show(self, start_state = None):
         if not start_state:
@@ -62,14 +63,15 @@ class grid_agent():
         if not start_state:
             start_state= self.start_state
         metrics = multi_allmetrics.run(np.load('qtable.npy'), self.__environment.target_state_repr, start_state, transition_orientation)
-        sr, non_converged = self.__get_success_rate()
-        print(non_converged)
-        print(f'----------------------- Stats Starting in the state {start_state} -----------------------')
-        print(f'Planning time: {metrics["runtime"]:.2f} (ms)')
-        print(f'Distance: {metrics["distance"]} (m)')
-        print(f'Number of turns: {metrics["curve"]}')
-        print(f'Success Rate: {sr:.2f}')
+       # sr, non_converged = self.get_success_rate()
+       # print(non_converged)
+       # print(f'----------------------- Stats Starting in the state {start_state} -----------------------')
+       # print(f'Planning time: {metrics["runtime"]:.2f} (ms)')
+       # print(f'Distance: {metrics["distance"]} (m)')
+       # print(f'Number of turns: {metrics["curve"]}')
+       # print(f'Success Rate: {sr:.2f}')
+        return [metrics["runtime"], metrics["distance"], metrics["curve"]]#, sr]
 
-    def __get_success_rate(self):
+    def get_success_rate(self):
         return multi_success_rate.run(np.load('qtable.npy'), self.__environment.target_state_repr, transition_orientation)
 
