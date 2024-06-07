@@ -39,10 +39,8 @@ class path_view():
         specified by the `path` parameter.
         """
         with open(path, 'w') as f:
-                        for i in range(len(self.grid)):
-                            for j in range(len(self.grid[0])):
-                                if self.grid[i][j] == 1 or self.grid[i][j] == 2 or self.grid[i][j] == 3:
-                                    f.write(f'{i} {j}\n')
+            for position in self.states:
+                f.write(f'{position[0]} {position[1]}\n')
         pygame.quit()
 
 
@@ -55,41 +53,41 @@ class path_view():
         for row in range(self.row):
             self.grid.append([])
             for col in range(self.col):
-                self.grid[row].append(0) 
-        
-        pygame.init()   
+                self.grid[row].append(0)
+
+        pygame.init()
         janela = pygame.display.set_mode(((self.col*self.height) + self.col + 1, (self.row*self.width) + self.row+1))
-        pygame.display.set_caption("Path Planning")  
-        
+        pygame.display.set_caption("Path Planning")
+
         # obstacles
         obs = load_obstacles().load('environment/maps/map.txt')
         for row, col in obs:
             if 0 <= row < len(self.grid) and 0 <= col < len(self.grid[0]):
                 self.grid[row][col] = 4
-        
+
         # positions
         for row, col in self.states:
             if 0 <= row < len(self.grid) and 0 <= col < len(self.grid[0]):
-                self.grid[row][col] = 1 
+                self.grid[row][col] = 1
             if (row, col) == (self.states[0]):
-                self.grid[row][col] = 2 
+                self.grid[row][col] = 2
             if (row, col) == (self.states[-1]):
                 self.grid[row][col] = 3
-            
-            
+
+
         FPS = 30
         timer = pygame.time.Clock()
-        done = True        
+        done = True
         while done:
-            for evento in pygame.event.get(): 
+            for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-       
+
                 elif evento.type == 768:
                     done = False
-                                    
-                                    
+
+
             janela.fill(BLACK)
             for row in range(self.row):
                 for col in range(self.col):
@@ -102,10 +100,10 @@ class path_view():
                         cor = GREEN
                     elif self.grid[row][col] == 4:
                         cor = BLACK
-                
+
                     pygame.draw.rect(janela, cor, [(self.margin + self.width) * col + self.margin,
                     (self.margin + self.height) * row + self.margin, self.width, self.height])
-                    
-                    
+
+
             timer.tick(FPS)
             pygame.display.flip()

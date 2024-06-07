@@ -54,7 +54,9 @@ class grid_agent():
         path = multi_planning.run(np.load('qtable.npy'), self.__environment.target_state_repr, start_state, transition_orientation)
         print(path)
         pv = path_view(self.__row, self.__col, path)
+        pv.save('environment/maps/path.txt')
         pv.run()
+
 
     def get_stats(self, start_state = None) :
         if not start_state:

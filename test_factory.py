@@ -8,15 +8,15 @@ def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=
     environment = env.create(n_row, n_col, n_psi, targets)
     context = grid_agent(intelligence, environment)
 
-    init = time()
-    context.train(50000, show=False)
-    fim = time()
-    start = (0, 0, 1, 0, 0, 0, 0)
+   # init = time()
+   # context.train(50000, show=False)
+   # fim = time()
+    start = (15, 9, 2, 0, 0, 0, 0)
     context.get_stats(start)
-    print(f'Training time: {(fim - init):.2f}')
+   # print(f'Training time: {(fim - init):.2f}')
     context.show(start)
 
 
 
 
-main(16, 10, 4, 3, [(6, 2), (4, 5), (14, 3), (12, 7)])
+main(16, 10, 4, 3, [(3, 2), (5, 8), (8, 2), (12, 5)])

@@ -6,8 +6,8 @@ from baseline import bfs_search
 from baseline.shortest_path_context import shortest_path_context
 import numpy as np
 from metrics_baseline import metrics_baseline as mbl
-target_set = set([(6, 2), (4, 5), (14, 3), (12, 7)])
-start_position = (0, 0)
+target_set = set([(3, 2), (5, 8), (8, 2), (12, 5)])
+start_position = (15, 9)
 
 obstacles = load_obstacles().load('environment/maps/map.txt')
 dicti = graph_2d(nrow = 16,
@@ -17,7 +17,7 @@ dicti = graph_2d(nrow = 16,
                  obstacles = obstacles)
 
 graph = dicti.get_graph()
-strategy = bfs_search()
+strategy = dijkstra_search()
 path_finder = shortest_path_context(strategy)
 
 final_path = [start_position]
