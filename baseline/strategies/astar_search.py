@@ -1,6 +1,8 @@
 from ..shorterst_path_interface import shorterst_path_interface
 from typing import Dict, Tuple, List
 from ..data_structure import PriorityQueue
+from math import sqrt
+from math import pow as power
 
 class astar_search(shorterst_path_interface):
     def run(self, graph:Dict[Tuple[int, int], Dict[Tuple[int, int], float]],
@@ -14,10 +16,8 @@ class astar_search(shorterst_path_interface):
         cost_so_far[start] = 0
         while not frontier.empty():
             current = frontier.get()
-
             if current == target:
                 break
-
             for next in graph[current]:
                 new_cost = cost_so_far[current] + graph[current][next]
                 if next not in cost_so_far or new_cost < cost_so_far[next]:
@@ -32,7 +32,14 @@ class astar_search(shorterst_path_interface):
         """
         The function `heuristic()` calculates the euclidean distance between two points.
         """
-        return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+        # x1, x2 = a[0], b[0]
+        # y1, y2 = a[1], b[1]
+        # if a[0] < b[0]:
+        #     x1, x2 = b[0], a[0]
+        # if a[1] < b[1]:
+        #     y1, y2 = b[1], a[1]
+
+        return sqrt(power(a[0] - b[0], 2) + power(a[1] - b[1], 2))
 
     def __reconstruct_path(self, came_from:dict,
                            start:Tuple, goal:Tuple) -> List[Tuple[int, int]]:

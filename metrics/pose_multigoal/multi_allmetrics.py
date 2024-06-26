@@ -11,7 +11,7 @@ class multi_allmetrics(multi_metrics_interface):
             target_state : multi_target,
             start_state : Tuple,
             trans_model : transition_orientation) -> Dict:
-        
+
         n = 100
         turns = 0
         next_state = start_state
@@ -30,7 +30,7 @@ class multi_allmetrics(multi_metrics_interface):
             if best_action == 0:
                 metrics['path'].append(next_pose[0:2])
                 metrics['distance'] += 1
-            else:
+            elif best_action != 0 and metrics['distance'] > 0: # if the agent is already on a curve
                 metrics['curve'] += 1
         ending = time()
         metrics['runtime'] = (ending - start) * 1000

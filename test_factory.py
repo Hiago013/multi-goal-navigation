@@ -7,8 +7,9 @@ import numpy as np
 
 def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=0.1):
     data_header = ['Planning time', 'Path length', 'Curves', 'Success rate', 'Training time']
-    data_deploy = []
-    for i in range(11, 21):
+    start = (0, 0, 0, 0, 0, 0, 0)
+    for i in range(1, 21):
+        data_deploy = []
         intelligence = agent.create(alpha, gamma, epsilon, n_action, n_row, n_col, n_psi, targets)
         environment = env.create(n_row, n_col, n_psi, targets)
         context = grid_agent(intelligence, environment)
@@ -26,12 +27,12 @@ def main(n_row, n_col, n_psi, n_action, targets, alpha=0.1, gamma=0.99, epsilon=
         data_deploy_df[3] = context.get_success_rate()[0]
         data_deploy_df[4] = fim - init
         data_deploy_df.columns = data_header
-        data_deploy_df.to_excel(f'data_training/data_deploy_{i}.xlsx')
-        np.save(f'data_training/rewards_{i}.npy', rewards)
+        data_deploy_df.to_excel(f'data_training/map_2/data_deploy_{i}.xlsx')
+        np.save(f'data_training/map_2/rewards_{i}.npy', rewards)
         print(f'{i}th Training time: {(fim - init):.2f}')
-        #context.show(start)
+        context.show(start)
 
 
 
 
-main(16, 10, 4, 3, [(6, 2), (4, 5), (14, 3), (12, 7)])
+main(16, 10, 4, 3, [(3, 4), (7, 7), (10, 1), (13, 7)])
